@@ -15,7 +15,13 @@ class Gameboard {
     }
   }
 
-  // Place a ship on the board
+  /**
+   * The placeShip method places a ship on the board.
+   *
+   * @param {Ship} ship A ship object
+   * @param {int [[]]} position Coordinates of the ship
+   * @returns {Boolean} True if the ship is placed, false if not
+   */
   placeShip(ship, position) {
     // Check if the position is valid
     if (this.isValidPosition(ship, position)) {
@@ -64,6 +70,13 @@ class Gameboard {
     return true;
   }
 
+  /**
+   * The isConsecutive method checks if the coordinates are consecutive and
+   * gapless.
+   *
+   * @param {int [[]]} coordinates an array of coordinates
+   * @returns {Boolean} True if the coordinates are consecutive, false if not
+   */
   isConsecutive(coordinates) {
     let horizontal = true;
     let vertical = true;
