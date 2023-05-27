@@ -118,7 +118,7 @@ class Gameboard {
   /**
    * The receiveAttack method receives an attack and updates the board.
    *
-   * @param {int [[]]} position An array of coordinates
+   * @param {int []} position An array of coordinates
    * @returns Boolean True if the attack is successful, false if not
    */
   receiveAttack(position) {
