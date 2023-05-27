@@ -53,8 +53,11 @@ class Gameboard {
     if (coordinates.length !== ship.length) {
       return false;
     }
-    // Check if the position is on the board
-    if (Math.max(...coordinates) > 9 || Math.min(...coordinates) < 0) {
+    // Check if the position is out of bounds
+    if (
+      Math.max(...coordinates.flat()) > 9 ||
+      Math.min(...coordinates.flat()) < 0
+    ) {
       return false;
     }
     // Check if the position is already occupied
@@ -110,7 +113,12 @@ class Gameboard {
     return horizontal || vertical;
   }
 
-  // Receive an attack
+  /**
+   * The receiveAttack method receives an attack and updates the board.
+   *
+   * @param {int [[]]} position An array of coordinates
+   * @returns Boolean True if the attack is successful, false if not
+   */
   receiveAttack(position) {
     // Check if the position is valid
     if (this.isValidAttack(position)) {
@@ -127,7 +135,12 @@ class Gameboard {
     return false;
   }
 
-  // Check if the position is valid
+  /**
+   * The isValidAttack method checks if the attack is valid.
+   *
+   * @param {int [[]]} position An array of coordinates
+   * @returns Boolean True if the attack is valid, false if not
+   */
   isValidAttack(position) {
     // Check if the position is an array
     if (!Array.isArray(position)) {
@@ -138,21 +151,27 @@ class Gameboard {
       return false;
     }
     // Check if the position is on the board
-    if (
-      position[0] < 0 ||
-      position[0] > 9 ||
-      position[1] < 0 ||
-      position[1] > 9
-    ) {
+    if (Math.max(...position.flat()) > 9 || Math.min(...position.flat()) < 0) {
       return false;
     }
-    // Check if the position has already been attacked
+    // Check if the position has already been attacked (miss)
     for (let i = 0; i < this.missedShots.length; i++) {
       if (
         this.missedShots[i][0] === position[0] &&
         this.missedShots[i][1] === position[1]
       ) {
         return false;
+      }
+    }
+    // Check if the position has already been attacked (hit)
+    for (let i = 0; i < this.ships.length; i++) {
+      for (let j = 0; j < this.ships[i].hits.length; j++) {
+        if (
+          this.ships[i].hits[j][0] === position[0] &&
+          this.ships[i].hits[j][1] === position[1]
+        ) {
+          return false;
+        }
       }
     }
     return true;
