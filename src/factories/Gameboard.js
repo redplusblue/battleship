@@ -5,7 +5,9 @@ class Gameboard {
     this.missedShots = [];
   }
 
-  // Create the board
+  /**
+   * The createBoard method creates a 10x10 board.
+   */
   createBoard() {
     for (let i = 0; i < 10; i++) {
       this.board.push([]);
@@ -177,7 +179,10 @@ class Gameboard {
     return true;
   }
 
-  // Check if all ships are sunk
+  /**
+   * The allShipsSunk method checks if all ships are sunk.
+   * @returns Boolean True if all ships are sunk, false if not
+   */
   allShipsSunk() {
     for (let i = 0; i < this.ships.length; i++) {
       if (!this.ships[i].isSunk()) {
@@ -187,7 +192,9 @@ class Gameboard {
     return true;
   }
 
-  // Reset the board
+  /**
+   * The resetBoard method resets the board.
+   */
   resetBoard() {
     this.board = [];
     this.ships = [];
