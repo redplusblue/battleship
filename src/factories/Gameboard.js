@@ -3,6 +3,7 @@ class Gameboard {
     this.board = [];
     this.ships = [];
     this.missedShots = [];
+    this.shipPositions = {};
   }
 
   /**
@@ -33,6 +34,8 @@ class Gameboard {
       position.forEach((pos) => {
         this.board[pos[0]][pos[1]] = ship;
       });
+      // Add the ship to the shipPositions object
+      this.shipPositions[ship.name] = position;
       return true;
     } else {
       return false;
@@ -200,6 +203,35 @@ class Gameboard {
     this.ships = [];
     this.missedShots = [];
     this.createBoard();
+  }
+
+  // Helper function to compare two arrays
+  isEqualTo(array1, array2) {
+    if (array1.length !== array2.length) {
+      return false;
+    }
+    return JSON.stringify(array1) === JSON.stringify(array2);
+  }
+
+  // Returns the ship object matching the given name
+  getShipByName(name) {
+    for (let i = 0; i < this.ships.length; i++) {
+      if (this.ships[i].name === name) {
+        return this.ships[i];
+      }
+    }
+  }
+
+  // Returns the Ship object at the given coordinates
+  getShipAt(coordinates) {
+    for (const [key, value] of Object.entries(this.shipPositions)) {
+      for (const val of value) {
+        if (this.isEqualTo(val, coordinates)) {
+          return this.getShipByName(key);
+        }
+      }
+    }
+    return null;
   }
 }
 

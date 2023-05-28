@@ -126,3 +126,14 @@ describe("Gameboard All Ships Sunk", () => {
     expect(gameboard.allShipsSunk()).toBe(true);
   });
 });
+
+it("Get Ship at a coordinate", () => {
+  const gameboard = new Gameboard();
+  gameboard.createBoard();
+  gameboard.placeShip(new Ship("destroyer", [0, 1]), [
+    [0, 0],
+    [0, 1],
+  ]);
+  // Expect the ship object
+  expect(gameboard.getShipAt([0, 0])).toBe(gameboard.ships[0]);
+});
