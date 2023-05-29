@@ -202,6 +202,7 @@ class Gameboard {
     this.board = [];
     this.ships = [];
     this.missedShots = [];
+    this.shipPositions = {};
     this.createBoard();
   }
 
