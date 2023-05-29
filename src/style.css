@@ -39,6 +39,21 @@ body {
   outline: 0.2px solid white;
 }
 
+.occupied {
+  background-color: #6600ff;
+  opacity: 0.65;
+}
+
+.hit {
+  background-color: #ff0000;
+  opacity: 0.85;
+}
+
+.miss {
+  background-color: #ffffff;
+  opacity: 0.85;
+}
+
 .player-side,
 .computer-side {
   display: flex;
@@ -57,6 +72,11 @@ body {
   text-align: center;
   margin-bottom: 1rem;
   user-select: none;
+}
+
+.computer-board > .row > .col:hover {
+  cursor: pointer;
+  background-color: #f5f5f5;
 }
 
 /* .col:hover {
