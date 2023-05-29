@@ -2,6 +2,7 @@ class Gameboard {
   constructor() {
     this.board = [];
     this.ships = [];
+    this.hits = [];
     this.missedShots = [];
     this.shipPositions = {};
   }
@@ -131,6 +132,8 @@ class Gameboard {
       if (this.board[position[0]][position[1]] !== null) {
         // Hit the ship
         this.board[position[0]][position[1]].hit(position);
+        // Add the position to the hits array
+        this.hits.push(position);
       } else {
         // Add the position to the missedShots array
         this.missedShots.push(position);
