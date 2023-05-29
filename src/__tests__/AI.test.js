@@ -38,6 +38,10 @@ describe("AI Combat", () => {
   beforeEach(() => {
     ai.movesQueue = [];
     ai.opponent = player;
+    ai.ships = [];
+    ai.moves = [];
+    player.moves = [];
+    player.ships = [];
     ai.gameboard.resetBoard();
     player.gameboard.resetBoard();
   });
@@ -65,10 +69,28 @@ describe("AI Combat", () => {
     ai.attack(player, ai.nextMove());
     // Hit the other one if the first one was a miss
     ai.attack(player, ai.nextMove());
-    console.log(ai.movesQueue);
     // Hit a random spot to test if the AI can still hit random spots
     ai.attack(player, ai.nextMove());
 
+    expect(player.gameboard.allShipsSunk()).toBe(true);
+  });
+
+  it("Can hit consistently forwards and backwards", () => {
+    player.gameboard.placeShip(new Ship("crusier", [0, 1, 2]), [
+      [0, 0],
+      [0, 1],
+      [0, 2],
+    ]);
+    ai.movesQueue = [[0, 0]];
+    // Hit 0,0
+    ai.attack(player, ai.movesQueue[0]);
+    // Repeat because we fed the AI a hit
+    ai.attack(player, ai.nextMove());
+    ai.attack(player, ai.nextMove());
+    ai.attack(player, ai.nextMove());
+    ai.attack(player, ai.nextMove());
+    ai.attack(player, ai.nextMove());
+    ai.attack(player, ai.nextMove());
     expect(player.gameboard.allShipsSunk()).toBe(true);
   });
 });
