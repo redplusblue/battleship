@@ -237,6 +237,24 @@ class Gameboard {
     }
     return null;
   }
+
+  // Returns whether the given coordinates are hit or miss or not attacked
+  getHitOrMiss(coordinates) {
+    // Check for hits
+    for (let i = 0; i < this.hits.length; i++) {
+      if (this.isEqualTo(this.hits[i], coordinates)) {
+        return "hit";
+      }
+    }
+    // Check for misses
+    for (let i = 0; i < this.missedShots.length; i++) {
+      if (this.isEqualTo(this.missedShots[i], coordinates)) {
+        return "miss";
+      }
+    }
+    // Return not attacked
+    return "not attacked";
+  }
 }
 
 export default Gameboard;
