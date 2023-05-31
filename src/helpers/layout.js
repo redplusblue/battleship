@@ -80,6 +80,31 @@ const gameboardToBoard = (player) => {
   }
 };
 
+const addEventListeners = (player, ai) => {
+  const computerBoard = document.querySelector(".computer-board");
+  // Add event listener to every cell of the computerBoard to listen for clicks
+  // Get all the children of .computer-board with the class of .col
+  const computerBoardCells = computerBoard.querySelectorAll(".col");
+  computerBoardCells.forEach((cell) => {
+    cell.addEventListener("click", () => {
+      // Cell ID -> C00
+      let cellId = cell.id;
+      let cellRow = cellId.split("")[1];
+      let cellCol = cellId.split("")[2];
+      // Check if the cell has already been clicked
+      let status = ai.gameboard.getHitOrMiss([cellRow, cellCol]);
+      if (status == "hit" || status == "miss") {
+        return;
+      }
+      // If not, attack the cell
+      else {
+        player.attack(ai, [cellRow, cellCol]);
+        updateBoard(player, ai);
+      }
+    });
+  });
+};
+
 /**
  * The updateBoard function updates the board on the
  * DOM with the player's and the AI's hits and misses
@@ -98,21 +123,39 @@ const updateBoard = (player, ai) => {
       `P${playerHits[i][0]}${playerHits[i][1]}`
     );
     cell.classList.add("hit");
+    cell.removeEventListener("click", () => {});
   }
   for (let i = 0; i < playerMisses.length; i++) {
     let cell = document.getElementById(
       `P${playerMisses[i][0]}${playerMisses[i][1]}`
     );
     cell.classList.add("miss");
+    cell.removeEventListener("click", () => {});
   }
   for (let i = 0; i < aiHits.length; i++) {
     let cell = document.getElementById(`C${aiHits[i][0]}${aiHits[i][1]}`);
     cell.classList.add("hit");
+    cell.removeEventListener("click", () => {});
   }
   for (let i = 0; i < aiMisses.length; i++) {
     let cell = document.getElementById(`C${aiMisses[i][0]}${aiMisses[i][1]}`);
     cell.classList.add("miss");
+    cell.removeEventListener("click", () => {});
   }
 };
 
-export { createLayout, gameboardToBoard, updateBoard };
+const setTurn = (s) => {
+  if (s == "player") {
+    document.querySelector(".computer-side").classList.remove(".not-allowed");
+  } else {
+    document.querySelector(".computer-side").classList.add(".not-allowed");
+  }
+};
+
+export {
+  createLayout,
+  addEventListeners,
+  gameboardToBoard,
+  updateBoard,
+  setTurn,
+};
