@@ -49,9 +49,19 @@ body {
   opacity: 0.85;
 }
 
+.hit:hover {
+  cursor: not-allowed !important;
+  background-color: #ff0000 !important;
+}
+
 .miss {
   background-color: #ffffff;
   opacity: 0.85;
+}
+
+.miss:hover {
+  cursor: not-allowed !important;
+  background-color: #ffffff !important;
 }
 
 .player-side,
