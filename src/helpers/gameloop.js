@@ -1,7 +1,7 @@
 import Player from "../factories/Player";
 import AI from "../factories/AI";
 import Game from "../factories/Game";
-import { addEventListeners, setTurn } from "./layout";
+import { addEventListeners, setTurn, updateBoard } from "./layout";
 import { shipCreator, randomShipPlacer } from "./shipWizard";
 // Main loop for the game
 // Idea: Start as an alert() based game, then move to a DOM based game
@@ -19,26 +19,24 @@ export const gameloop = () => {
   const ships = shipCreator();
   randomShipPlacer(playerGameboard, ships.playerShips);
   randomShipPlacer(computerGameboard, ships.computerShips);
-
   // IF we create a game object for the gameloop which keep track of scores and players and turns
   // class Game: Attributes - player, computer, playerScore, computerScore, currentTurn
   // Methods - attack, checkWin, switchTurns
   // Game loop
   const game = new Game(player, computer);
-  addEventListeners(player, computer);
-  let playerMoves = 0;
-  let computerMoves = 0;
+  addEventListeners(player, computer, game);
   while (!game.checkWin()) {
     if (game.currentTurn === player) {
-      // Somehow make it wait for the player to click on a cell
-      if (player.moves.length > playerMoves.length) {
-        game.switchTurns();
-      }
+      setTurn("player");
+      // Wait for dom event
+      
     } else {
       computer.attack(player, computer.nextMove());
-      if (computer.moves.length > computerMoves.length) {
-        game.switchTurns();
-      }
+      game.switchTurns();
     }
+    // Update scores
+    game.playerScore = computer.gameboard.hits.length;
+    game.computerScore = player.gameboard.hits.length;
+    updateBoard(player, computer);
   }
 };
