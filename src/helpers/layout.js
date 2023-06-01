@@ -80,7 +80,7 @@ const gameboardToBoard = (player) => {
   }
 };
 
-const addEventListeners = (player, ai) => {
+const addEventListeners = (player, ai, game) => {
   const computerBoard = document.querySelector(".computer-board");
   // Add event listener to every cell of the computerBoard to listen for clicks
   // Get all the children of .computer-board with the class of .col
@@ -101,6 +101,9 @@ const addEventListeners = (player, ai) => {
         player.attack(ai, [cellRow, cellCol]);
         updateBoard(player, ai);
       }
+      // Swap turns
+      game.switchTurns();
+      setTurn("computer");
     });
   });
 };
