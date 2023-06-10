@@ -1,11 +1,13 @@
 import AI from "../factories/AI";
 import Player from "../factories/Player";
+import { loop } from "./gameloop";
 
 const createLayout = () => {
   const gameBoardContainer = document.createElement("div");
   gameBoardContainer.className = "game-board-container";
   document.body.appendChild(gameBoardContainer);
 
+  // Player Side
   const playerSide = document.createElement("div");
   playerSide.className = "player-side";
   const playerGameBoard = document.createElement("div");
@@ -27,6 +29,7 @@ const createLayout = () => {
   }
   playerSide.appendChild(playerGameBoard);
 
+  // Computer Side
   const computerSide = document.createElement("div");
   computerSide.className = "computer-side";
   const computerGameBoard = document.createElement("div");
@@ -49,17 +52,37 @@ const createLayout = () => {
   }
   computerSide.appendChild(computerGameBoard);
 
-  // Show player names
+  // Show player score, names, and status
+  const playerWidget = document.createElement("div");
+  playerWidget.className = "player-widget";
+  const playerScore = document.createElement("div");
+  playerScore.className = "player-score";
   const playerName = document.createElement("div");
   playerName.className = "player-name";
+  const playerStatus = document.createElement("div");
+  playerStatus.className = "player-status";
   playerName.textContent = "Player";
-  playerSide.appendChild(playerName);
+  playerWidget.appendChild(playerScore);
+  playerWidget.appendChild(playerName);
+  playerWidget.appendChild(playerStatus);
+
+  playerSide.appendChild(playerWidget);
 
   // Show computer names
+  const computerWidget = document.createElement("div");
+  computerWidget.className = "computer-widget";
+  const computerScore = document.createElement("div");
+  computerScore.className = "computer-score";
   const computerName = document.createElement("div");
+  const computerStatus = document.createElement("div");
+  computerStatus.className = "computer-status";
   computerName.className = "computer-name";
   computerName.textContent = "Computer";
-  computerSide.appendChild(computerName);
+  computerWidget.appendChild(computerScore);
+  computerWidget.appendChild(computerName);
+  computerWidget.appendChild(computerStatus);
+
+  computerSide.appendChild(computerWidget);
 
   gameBoardContainer.appendChild(playerSide);
   gameBoardContainer.appendChild(computerSide);
@@ -104,6 +127,7 @@ const addEventListeners = (player, ai, game) => {
       // Swap turns
       game.switchTurns();
       setTurn("computer");
+      loop(player, ai, game);
     });
   });
 };
@@ -145,6 +169,56 @@ const updateBoard = (player, ai) => {
     cell.classList.add("miss");
     cell.removeEventListener("click", () => {});
   }
+  updateScore(player, ai);
+};
+
+const updateScore = (player, ai) => {
+  const playerScore = document.querySelector(".player-score");
+  const computerScore = document.querySelector(".computer-score");
+  playerScore.textContent = "Score: " + ai.gameboard.hits.length;
+  computerScore.textContent = "Score: " + player.gameboard.hits.length;
+  // Get playerboard and computerboard
+  const playerBoard = document.querySelector(".player-side").childNodes[0];
+  const computerBoard = document.querySelector(".computer-side").childNodes[0];
+
+  // Update player status: hit or miss
+  const playerStatus = document.querySelector(".player-status");
+  const computerStatus = document.querySelector(".computer-status");
+  let playerLastMove = null || player.moves[player.moves.length - 1];
+  let computerLastMove = null || ai.moves[ai.moves.length - 1];
+  if (playerLastMove == null) {
+    playerStatus.textContent = "";
+  } else {
+    let playerLastMoveStatus = ai.gameboard.getHitOrMiss(playerLastMove);
+    if (playerLastMoveStatus == "hit") {
+      playerStatus.textContent = "Hit!";
+      playerStatus.style.color = "#ff0000";
+      computerBoard.style.animation = "hit 3.5s ease-in-out";
+      computerBoard.addEventListener("animationend", () => {
+        computerBoard.style.animation = "";
+      });
+    } else {
+      playerStatus.textContent = "Miss!";
+      playerStatus.style.color = "white";
+    }
+  }
+  if (computerLastMove == null) {
+    computerStatus.textContent = "";
+  } else {
+    let computerLastMoveStatus =
+      player.gameboard.getHitOrMiss(computerLastMove);
+    if (computerLastMoveStatus == "hit") {
+      computerStatus.textContent = "Hit!";
+      computerStatus.style.color = "#ff0000";
+      playerBoard.style.animation = "hit 3.5s ease-in-out";
+      playerBoard.addEventListener("animationend", () => {
+        playerBoard.style.animation = "";
+      });
+    } else {
+      computerStatus.textContent = "Miss!";
+      computerStatus.style.color = "white";
+    }
+  }
 };
 
 const setTurn = (s) => {
@@ -155,10 +229,35 @@ const setTurn = (s) => {
   }
 };
 
+const setWinner = (winner) => {
+  // Dont Allow clicks on the computer board
+  document.querySelector(".computer-side").style.pointerEvents = "none";
+  // Display the winner
+  const winnerDisplay = document.createElement("div");
+  winnerDisplay.classList.add("winner-display");
+  winnerDisplay.textContent = winner + " wins!";
+  document.body.appendChild(winnerDisplay);
+  // Animate winner's board
+  if (winner == "Player") {
+    document.querySelector(".player-side").childNodes[0].style.animation =
+      "rainbow 3s ease-in-out infinite";
+    document.querySelector(".computer-side").childNodes[0].style.opacity = 0.5;
+    document.querySelector(".player-name").style.animation =
+      "textRainbow 3s ease-in-out infinite";
+  } else {
+    document.querySelector(".computer-side").childNodes[0].style.animation =
+      "rainbow 3s ease-in-out infinite";
+    document.querySelector(".player-side").childNodes[0].style.opacity = 0.5;
+    document.querySelector(".computer-name").style.animation =
+      "textRainbow 3s ease-in-out infinite";
+  }
+};
+
 export {
   createLayout,
   addEventListeners,
   gameboardToBoard,
   updateBoard,
   setTurn,
+  setWinner,
 };
