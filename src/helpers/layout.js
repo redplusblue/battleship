@@ -3,15 +3,8 @@ import Player from "../factories/Player";
 import { loop } from "./gameloop";
 
 const createLayout = () => {
-  const gameBoardContainer = document.createElement("div");
-  gameBoardContainer.className = "game-board-container";
-  document.body.appendChild(gameBoardContainer);
-
   // Player Side
-  const playerSide = document.createElement("div");
-  playerSide.className = "player-side";
-  const playerGameBoard = document.createElement("div");
-  playerGameBoard.className = "game-board";
+  const playerGameBoard = document.querySelector(".player-side").children[0];
   for (let i = 9; i >= 0; i--) {
     // Create row divs
     const row = document.createElement("div");
@@ -27,14 +20,9 @@ const createLayout = () => {
 
     playerGameBoard.appendChild(row);
   }
-  playerSide.appendChild(playerGameBoard);
-
   // Computer Side
-  const computerSide = document.createElement("div");
-  computerSide.className = "computer-side";
-  const computerGameBoard = document.createElement("div");
-  computerGameBoard.className = "game-board";
-  computerGameBoard.classList.add("computer-board");
+  const computerGameBoard =
+    document.querySelector(".computer-side").children[0];
   for (let i = 9; i >= 0; i--) {
     // Create row divs
     const row = document.createElement("div");
@@ -50,42 +38,6 @@ const createLayout = () => {
 
     computerGameBoard.appendChild(row);
   }
-  computerSide.appendChild(computerGameBoard);
-
-  // Show player score, names, and status
-  const playerWidget = document.createElement("div");
-  playerWidget.className = "player-widget";
-  const playerScore = document.createElement("div");
-  playerScore.className = "player-score";
-  const playerName = document.createElement("div");
-  playerName.className = "player-name";
-  const playerStatus = document.createElement("div");
-  playerStatus.className = "player-status";
-  playerName.textContent = "Player";
-  playerWidget.appendChild(playerScore);
-  playerWidget.appendChild(playerName);
-  playerWidget.appendChild(playerStatus);
-
-  playerSide.appendChild(playerWidget);
-
-  // Show computer names
-  const computerWidget = document.createElement("div");
-  computerWidget.className = "computer-widget";
-  const computerScore = document.createElement("div");
-  computerScore.className = "computer-score";
-  const computerName = document.createElement("div");
-  const computerStatus = document.createElement("div");
-  computerStatus.className = "computer-status";
-  computerName.className = "computer-name";
-  computerName.textContent = "Computer";
-  computerWidget.appendChild(computerScore);
-  computerWidget.appendChild(computerName);
-  computerWidget.appendChild(computerStatus);
-
-  computerSide.appendChild(computerWidget);
-
-  gameBoardContainer.appendChild(playerSide);
-  gameBoardContainer.appendChild(computerSide);
 };
 
 // Function to place the ships from the gameboard into the board on the DOM
@@ -178,8 +130,8 @@ const updateScore = (player, ai) => {
   playerScore.textContent = "Score: " + ai.gameboard.hits.length;
   computerScore.textContent = "Score: " + player.gameboard.hits.length;
   // Get playerboard and computerboard
-  const playerBoard = document.querySelector(".player-side").childNodes[0];
-  const computerBoard = document.querySelector(".computer-side").childNodes[0];
+  const playerBoard = document.querySelector(".player-side").children[0];
+  const computerBoard = document.querySelector(".computer-side").children[0];
 
   // Update player status: hit or miss
   const playerStatus = document.querySelector(".player-status");
@@ -239,15 +191,15 @@ const setWinner = (winner) => {
   document.body.appendChild(winnerDisplay);
   // Animate winner's board
   if (winner == "Player") {
-    document.querySelector(".player-side").childNodes[0].style.animation =
+    document.querySelector(".player-side").children[0].style.animation =
       "rainbow 3s ease-in-out infinite";
-    document.querySelector(".computer-side").childNodes[0].style.opacity = 0.5;
+    document.querySelector(".computer-side").children[0].style.opacity = 0.5;
     document.querySelector(".player-name").style.animation =
       "textRainbow 3s ease-in-out infinite";
   } else {
-    document.querySelector(".computer-side").childNodes[0].style.animation =
+    document.querySelector(".computer-side").children[0].style.animation =
       "rainbow 3s ease-in-out infinite";
-    document.querySelector(".player-side").childNodes[0].style.opacity = 0.5;
+    document.querySelector(".player-side").children[0].style.opacity = 0.5;
     document.querySelector(".computer-name").style.animation =
       "textRainbow 3s ease-in-out infinite";
   }
