@@ -8,7 +8,9 @@ module.exports = {
   devtool: "inline-source-map",
   plugins: [
     new HtmlWebpackPlugin({
-      title: "Welcome to Battleship",
+      title: "Battleship",
+      template: "./src/index.html",
+      scriptLoading: "blocking",
     }),
   ],
   // Source map to identify source of errors
