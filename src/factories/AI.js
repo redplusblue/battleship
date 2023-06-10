@@ -25,7 +25,17 @@ class AI extends Player {
       const ship = this.opponent.gameboard.getShipAt(move);
       const coordinates = this.opponent.gameboard.shipPositions[ship.name];
       for (const coordinate of coordinates) {
-        if (!this.moves.includes(coordinate)) {
+        if (
+          !contains(this.moves, coordinate) &&
+          !contains(this.movesQueue, coordinate) &&
+          !arraysAreEqual(coordinate, move)
+        ) {
+          console.log("Moves");
+          console.log(this.moves);
+          console.log("Queue");
+          console.log(this.movesQueue);
+          console.log("Pushing: ");
+          console.log(coordinate);
           this.movesQueue.push(coordinate);
         }
       }
@@ -58,5 +68,28 @@ class AI extends Player {
     return hit;
   }
 }
+
+const contains = (array, element) => {
+  for (const item of array) {
+    if (arraysAreEqual(item, element)) {
+      return true;
+    }
+  }
+  return false;
+};
+
+const arraysAreEqual = (array1, array2) => {
+  if (array1.length !== array2.length) {
+    return false;
+  }
+
+  for (let i = 0; i < array1.length; i++) {
+    if (array1[i] !== array2[i]) {
+      return false;
+    }
+  }
+
+  return true;
+};
 
 export default AI;
