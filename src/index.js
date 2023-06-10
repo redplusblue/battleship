@@ -12,4 +12,4 @@ import Ship from "./factories/Ship";
 import AI from "./factories/AI";
 
 createLayout();
-// gameloop();
+gameloop();
