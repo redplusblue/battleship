@@ -30,12 +30,6 @@ class AI extends Player {
           !contains(this.movesQueue, coordinate) &&
           !arraysAreEqual(coordinate, move)
         ) {
-          console.log("Moves");
-          console.log(this.moves);
-          console.log("Queue");
-          console.log(this.movesQueue);
-          console.log("Pushing: ");
-          console.log(coordinate);
           this.movesQueue.push(coordinate);
         }
       }
