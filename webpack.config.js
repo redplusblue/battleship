@@ -4,13 +4,25 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 module.exports = {
   mode: "development",
   // Entry can be an object containing multiple entry points
-  entry: "./src/index.js",
+  entry: {
+    game: "./src/index.js",
+    welcome: "./src/welcome.js",
+  },
   devtool: "inline-source-map",
   plugins: [
     new HtmlWebpackPlugin({
       title: "Battleship",
       template: "./src/index.html",
       scriptLoading: "blocking",
+      filename: "game.html",
+      chunks: ["game"],
+    }),
+    new HtmlWebpackPlugin({
+      title: "Welcome to Battleship",
+      template: "./src/welcome.html",
+      scriptLoading: "blocking",
+      filename: "index.html",
+      chunks: ["welcome"],
     }),
   ],
   // Source map to identify source of errors
