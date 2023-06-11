@@ -8,7 +8,6 @@
   </head>
   <body>
     <h1>Battleship</h1>
-    <h2>How to play:</h2>
     <p>
       Battleship is a game where you and the computer take turns guessing
       coordinates on a 10x10 grid. The first player to sink all of the other
@@ -18,16 +17,33 @@
       <div class="instructions">
         <h3>Instructions</h3>
         <ul type="*">
-          <li>First we</li>
+          <li>
+            First we place five ships on the board in horizontal or vertical
+            directions. Ships cannot overlap. The ships are:
+            <ul type="-">
+              <li>Carrier (6 spaces)</li>
+              <li>Battleship (4 spaces)</li>
+              <li>Cruiser (3 spaces)</li>
+              <li>Submarine (3 spaces)</li>
+              <li>Destroyer (2 spaces)</li>
+            </ul>
+          </li>
+          <li>
+            After placing the ships, the game begins. The first player to sink
+            all of the other player's ships wins!
+          </li>
+          <li>
+            Click on spots on the computer's board to attack them.
+            <font color="red">Red</font> means a 'hit' and white means a 'miss'.
+          </li>
         </ul>
       </div>
       <div class="preview">
-        <img
-          src="./assets/Illustration.png"
-          alt="Illustration showing the location of scores"
-        />
+        <img alt="Illustration showing the location of scores" />
       </div>
     </div>
-    <button>Play!</button>
+    <div class="play">
+      <button>Play!</button>
+    </div>
   </body>
 </html>
