@@ -1,0 +1,69 @@
+@keyframes hit {
+  0% {
+    outline: 3px solid #ff0000;
+  }
+  /*
+  Extra animation TBD
+  100% {
+    background-color: #ff0000;
+    opacity: 0.85;
+  } */
+}
+
+@keyframes rainbow {
+  0% {
+    outline: 3px solid #ff0000;
+    box-shadow: 0 0 10px #ff0000;
+    transform: translateY(0%) translateX(0%);
+  }
+  25% {
+    outline: 3px solid #ff8000;
+    box-shadow: 0 0 10px #ff8000;
+    transform: translateY(-30%) translateX(30%);
+  }
+  50% {
+    outline: 3px solid #ffff00;
+    box-shadow: 0 0 10px #ffff00;
+    transform: translateY(0%) translateX(0%);
+  }
+  75% {
+    outline: 3px solid #00ff00;
+    box-shadow: 0 0 10px #00ff00;
+    transform: translateY(-30%) translateX(-30%);
+  }
+  100% {
+    outline: 3px solid #00ffff;
+    box-shadow: 0 0 10px #00ffff;
+    transform: translateY(0%) translateX(0%);
+  }
+}
+
+@keyframes textRainbow {
+  0% {
+    color: #ff0000;
+  }
+  25% {
+    color: #ff8000;
+  }
+  50% {
+    color: #ffff00;
+  }
+  75% {
+    color: #00ff00;
+  }
+  100% {
+    color: #00ffff;
+  }
+}
+
+@keyframes enlarge {
+  0% {
+    font-size: 5rem;
+  }
+  50% {
+    font-size: 4.9rem;
+  }
+  100% {
+    font-size: 5rem;
+  }
+}

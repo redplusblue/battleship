@@ -1,0 +1,132 @@
+body,
+html {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: url("../assets/gradient.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.game-board-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.game-board {
+  width: 400px;
+  height: 400px;
+  outline: 3px solid white;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.row,
+.col {
+  min-width: 40px;
+  min-height: 40px;
+  outline: 0.2px solid white;
+}
+
+.occupied {
+  background-color: #6600ff;
+  opacity: 0.65;
+}
+
+.hit {
+  background-color: #ff0000;
+  opacity: 0.85;
+}
+
+.hit:hover {
+  cursor: not-allowed !important;
+  background-color: #ff0000 !important;
+}
+
+.miss {
+  background-color: #ffffff;
+  opacity: 0.85;
+}
+
+.miss:hover {
+  cursor: not-allowed !important;
+  background-color: #ffffff !important;
+}
+
+.player-side,
+.computer-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem;
+  gap: 1rem;
+}
+
+.player-widget,
+.computer-widget {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 1rem;
+  width: 100%;
+}
+
+.player-score,
+.computer-score,
+.player-status,
+.computer-status {
+  text-align: left;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  user-select: none;
+}
+
+.player-name,
+.computer-name {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  user-select: none;
+}
+
+.player-status,
+.computer-status {
+  text-align: right;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  user-select: none;
+}
+
+.computer-board > .row > .col:hover {
+  cursor: pointer;
+  background-color: #f5f5f5;
+}
+
+.winner-display {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 3rem;
+  font-weight: bold;
+  text-align: center;
+  user-select: none;
+}
+
+

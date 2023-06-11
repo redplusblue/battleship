@@ -1,0 +1,51 @@
+@font-face {
+  font-family: "Cinzel";
+  src: url("../assets/Cinzel-VariableFont_wght.ttf") format("truetype");
+}
+
+body {
+  background: url("../assets/gradient.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: whitesmoke;
+  font-family: "Cinzel";
+  user-select: none;
+}
+
+body > p {
+  font-size: 1.5rem;
+  text-align: center;
+  animation: reveal 4s ease-in-out 1;
+}
+
+h1 {
+  font-size: 4rem;
+  text-align: center;
+  animation: slide-in 2s ease-in-out 1;
+  margin: 0;
+}
+
+h2 {
+  font-size: 2rem;
+  text-align: center;
+  animation: slide-in 3s ease-in-out 1;
+  margin: 0;
+}
+
+@keyframes slide-in {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes reveal {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
