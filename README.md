@@ -3,8 +3,10 @@ Work in progress 🚧
 
 # To Do: 
 
-- [ ] Create info page with: 
-  - [ ] Instructions, 
+- [x] Create info page with: 
+  - [x] Instructions, 
+
+- [ ] Create form in first page
   - [ ] Ship Placement, 
   - [ ] Player name, 
   - [ ] AI difficulty
