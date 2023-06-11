@@ -185,9 +185,9 @@ const setWinner = (winner) => {
   // Dont Allow clicks on the computer board
   document.querySelector(".computer-side").style.pointerEvents = "none";
   // Display the winner
-  const winnerDisplay = document.createElement("div");
-  winnerDisplay.classList.add("winner-display");
+  const winnerDisplay = document.querySelector(".winner-display");
   winnerDisplay.textContent = winner + " wins!";
+  winnerDisplay.style.animation = "enlarge 3s infinite";
   document.body.appendChild(winnerDisplay);
   // Animate winner's board
   if (winner == "Player") {
