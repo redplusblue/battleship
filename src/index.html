@@ -6,6 +6,71 @@
     <title>Battleship</title>
   </head>
   <body>
+    <div class="form-div">
+      <div id="name-form">
+        <label for="player-name">Enter your name:</label>
+        <input type="text" id="player-name" name="player-name" />
+        <input type="button" value="&#x2713;" />
+      </div>
+      <div class="ship-placer">
+        <div class="ship-selection">
+          <div>
+            <h1>
+              Ships
+              <img id="left-click" alt="Left Click" />
+            </h1>
+          </div>
+          <div class="ships">
+            <div class="ship-container">
+              <div class="ship" id="ship-destroyer">
+                <div class="ship-destroyer-1"></div>
+                <div class="ship-destroyer-2"></div>
+              </div>
+              <div class="ship-name">Destroyer</div>
+            </div>
+            <div class="ship-container">
+              <div class="ship" id="ship-submarine">
+                <div class="ship-submarine-1"></div>
+                <div class="ship-submarine-2"></div>
+                <div class="ship-submarine-3"></div>
+              </div>
+              <div class="ship-name">Submarine</div>
+            </div>
+            <div class="ship-container">
+              <div class="ship" id="ship-cruiser">
+                <div class="ship-cruiser-1"></div>
+                <div class="ship-cruiser-2"></div>
+                <div class="ship-cruiser-3"></div>
+              </div>
+              <div class="ship-name">Cruiser</div>
+            </div>
+            <div class="ship-container">
+              <div class="ship" id="ship-battleship">
+                <div class="ship-battleship-1"></div>
+                <div class="ship-battleship-2"></div>
+                <div class="ship-battleship-3"></div>
+                <div class="ship-battleship-4"></div>
+              </div>
+              <div class="ship-name">Battleship</div>
+            </div>
+            <div class="ship-container">
+              <div class="ship" id="ship-carrier">
+                <div class="ship-carrier-1"></div>
+                <div class="ship-carrier-2"></div>
+                <div class="ship-carrier-3"></div>
+                <div class="ship-carrier-4"></div>
+                <div class="ship-carrier-5"></div>
+                <div class="ship-carrier-6"></div>
+              </div>
+              <div class="ship-name">Carrier</div>
+            </div>
+          </div>
+        </div>
+        <div class="ship-grid"></div>
+        <div class="instructions"></div>
+      </div>
+      <div class="difficulty"></div>
+    </div>
     <div class="game-board-container">
       <div class="player-side">
         <div class="game-board"></div>
@@ -25,5 +90,6 @@
       </div>
     </div>
     <div class="winner-display"></div>
+    <div class="current-mode">H</div>
   </body>
 </html>

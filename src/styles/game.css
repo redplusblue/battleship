@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "Cinzel";
+  src: url("../assets/Cinzel-VariableFont_wght.ttf") format("truetype");
+}
+
 body,
 html {
   width: 100%;
@@ -10,6 +15,8 @@ body {
   background: url("../assets/gradient.svg");
   background-repeat: no-repeat;
   background-size: cover;
+  font-family: "Cinzel", serif;
+  color: white;
 }
 
 .game-board-container {
@@ -129,4 +136,8 @@ body {
   user-select: none;
 }
 
-
+/* Invisible element for the use of the program */
+.current-mode {
+  display: none;
+  user-select: none;
+}
