@@ -1,5 +1,6 @@
 /* Old code for AI - To be used in the future
     Movements are more organic and decision making is more humane. 
+    Update: Partial implementation in Easy mode
      */
 
 // import Player from "./Player.js";
