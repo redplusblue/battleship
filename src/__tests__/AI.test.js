@@ -93,4 +93,13 @@ describe("AI Combat", () => {
     ai.attack(player, ai.nextMove());
     expect(player.gameboard.allShipsSunk()).toBe(true);
   });
+
+  it("Difficulties can be assigned", () => {
+    ai.difficulty = "easy";
+    expect(ai.difficulty).toBe("easy");
+    ai.difficulty = "medium";
+    expect(ai.difficulty).toBe("medium");
+    ai.difficulty = "hard";
+    expect(ai.difficulty).toBe("hard");
+  });
 });
