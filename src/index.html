@@ -12,6 +12,13 @@
         <input type="text" id="player-name" name="player-name" />
         <input type="button" value="&#x2713;" />
       </div>
+      <div id="ship-placer-form">
+        <h1>How would you like to place your ships?</h1>
+        <div class="ship-placement-btns">
+          <button>Random</button>
+          <button>Manually</button>
+        </div>
+      </div>
       <div class="ship-placer">
         <div class="ship-selection">
           <div>
@@ -26,7 +33,17 @@
                 <div class="ship-destroyer-1"></div>
                 <div class="ship-destroyer-2"></div>
               </div>
-              <div class="ship-name">Destroyer</div>
+              <div class="ship-name">
+                <span class="name-fragment">D</span>
+                <span class="name-fragment">e</span>
+                <span class="name-fragment">s</span>
+                <span class="name-fragment">t</span>
+                <span class="name-fragment">r</span>
+                <span class="name-fragment">o</span>
+                <span class="name-fragment">y</span>
+                <span class="name-fragment">e</span>
+                <span class="name-fragment">r</span>
+              </div>
             </div>
             <div class="ship-container">
               <div class="ship" id="ship-submarine">
@@ -34,7 +51,17 @@
                 <div class="ship-submarine-2"></div>
                 <div class="ship-submarine-3"></div>
               </div>
-              <div class="ship-name">Submarine</div>
+              <div class="ship-name">
+                <span class="name-fragment">S</span>
+                <span class="name-fragment">u</span>
+                <span class="name-fragment">b</span>
+                <span class="name-fragment">m</span>
+                <span class="name-fragment">a</span>
+                <span class="name-fragment">r</span>
+                <span class="name-fragment">i</span>
+                <span class="name-fragment">n</span>
+                <span class="name-fragment">e</span>
+              </div>
             </div>
             <div class="ship-container">
               <div class="ship" id="ship-cruiser">
@@ -42,7 +69,15 @@
                 <div class="ship-cruiser-2"></div>
                 <div class="ship-cruiser-3"></div>
               </div>
-              <div class="ship-name">Cruiser</div>
+              <div class="ship-name">
+                <span class="name-fragment">C</span>
+                <span class="name-fragment">r</span>
+                <span class="name-fragment">u</span>
+                <span class="name-fragment">i</span>
+                <span class="name-fragment">s</span>
+                <span class="name-fragment">e</span>
+                <span class="name-fragment">r</span>
+              </div>
             </div>
             <div class="ship-container">
               <div class="ship" id="ship-battleship">
@@ -51,7 +86,18 @@
                 <div class="ship-battleship-3"></div>
                 <div class="ship-battleship-4"></div>
               </div>
-              <div class="ship-name">Battleship</div>
+              <div class="ship-name">
+                <span class="name-fragment">B</span>
+                <span class="name-fragment">a</span>
+                <span class="name-fragment">t</span>
+                <span class="name-fragment">t</span>
+                <span class="name-fragment">l</span>
+                <span class="name-fragment">e</span>
+                <span class="name-fragment">s</span>
+                <span class="name-fragment">h</span>
+                <span class="name-fragment">i</span>
+                <span class="name-fragment">p</span>
+              </div>
             </div>
             <div class="ship-container">
               <div class="ship" id="ship-carrier">
@@ -62,14 +108,56 @@
                 <div class="ship-carrier-5"></div>
                 <div class="ship-carrier-6"></div>
               </div>
-              <div class="ship-name">Carrier</div>
+              <div class="ship-name">
+                <span class="name-fragment">C</span>
+                <span class="name-fragment">a</span>
+                <span class="name-fragment">r</span>
+                <span class="name-fragment">r</span>
+                <span class="name-fragment">i</span>
+                <span class="name-fragment">e</span>
+                <span class="name-fragment">r</span>
+              </div>
             </div>
           </div>
         </div>
         <div class="ship-grid"></div>
-        <div class="instructions"></div>
+        <div class="instructions">
+          <div class="instructions-content">
+            <h1>Instructions</h1>
+            <ul type="*">
+              <li>
+                Click on the mode button below to switch between vertical and
+                horizontal placement of ships.
+              </li>
+              <li>Click on the ship you want to place on the grid.</li>
+              <li>
+                Click on the grid to place the ship. Hover over the grid to see
+                the ship's position.
+              </li>
+              <li>
+                After placing all the ships, click on the place button to start
+                the game.
+              </li>
+            </ul>
+          </div>
+          <div class="mode-button-container">
+            <label for="mode-button">Current Mode: </label>
+            <button id="mode-button">Horizontal</button>
+          </div>
+          <div class="instructions-buttons">
+            <button id="place-button" disabled>Place!</button>
+            <button id="reset-button">Reset</button>
+          </div>
+        </div>
       </div>
-      <div class="difficulty"></div>
+      <div class="difficulty">
+        <div class="difficulty-container">
+          <h1>Choose a Difficulty:</h1>
+          <button class="difficulty-btn" id="easy">Easy</button>
+          <button class="difficulty-btn" id="medium">Medium</button>
+          <button class="difficulty-btn" id="hard">Hard</button>
+        </div>
+      </div>
     </div>
     <div class="game-board-container">
       <div class="player-side">
@@ -91,5 +179,16 @@
     </div>
     <div class="winner-display"></div>
     <div class="current-mode">H</div>
+    <div class="past-games">
+      <h1>Past Games</h1>
+      <table>
+        <tr>
+          <th>Score</th>
+          <th>Winner</th>
+        </tr>
+      </table>
+      <button id="past-hider">Hide</button>
+    </div>
+    <button id="game-reset-btn">Reset</button>
   </body>
 </html>

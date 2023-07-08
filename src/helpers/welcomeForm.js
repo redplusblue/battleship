@@ -1,12 +1,59 @@
 import LeftClick from "../assets/click.png";
+import Gameboard from "../factories/Gameboard";
+import { createLayout } from "./layout";
+import { shipPlacer, clearAllListeners } from "./shipPlacer";
+import { gameloop } from "./gameloop";
+import { getGameResults } from "./history";
 
 const createForm = () => {
   nameFormContent();
-  // Ship Placer
-  shipPlacerContent();
-  // Difficulty
 };
 
+// Navigate through the form
+const navigateForm = (element) => {
+  let currentElement;
+  switch (element) {
+    case "placer-form":
+      currentElement = document.querySelector("#ship-placer-form");
+      currentElement.style.display = "flex";
+      placerFormContent();
+      break;
+    case "placer":
+      document.querySelector("#ship-placer-form").style.display = "none";
+      currentElement = document.querySelector(".ship-placer");
+      currentElement.style.display = "grid";
+      shipPlacerContent();
+      break;
+    case "difficulty":
+      document.querySelector("#ship-placer-form").style.display = "none";
+      currentElement = document.querySelector(".difficulty");
+      currentElement.style.display = "block";
+      difficultyContent();
+      break;
+    case "game":
+      document.querySelector(".difficulty").style.display = "none";
+      currentElement = document.querySelector(".game-board-container");
+      currentElement.style.display = "flex";
+      document.querySelector(".form-div").style.display = "none";
+      createLayout();
+      if (window.GAME.placement === "random") {
+        gameloop(window.GAME.playerName, "auto", window.GAME.difficulty);
+      } else {
+        gameloop(
+          window.GAME.playerName,
+          boardToGameboard(),
+          window.GAME.difficulty
+        );
+      }
+      setComputerName();
+      break;
+    default:
+      break;
+  }
+  currentElement.style.animation = "reveal 1s forwards";
+};
+
+// Creates the name form
 const nameFormContent = () => {
   const nameForm = document.getElementById("name-form").children;
   const name = nameForm[1];
@@ -18,6 +65,8 @@ const nameFormContent = () => {
         nameForm[0].textContent = `Welcome, ${name.value}!`;
         nameForm[1].style.display = "none";
         nameForm[2].style.display = "none";
+        navigateForm("placer-form");
+        window.GAME.playerName = name.value;
       }
     }
   });
@@ -27,10 +76,77 @@ const nameFormContent = () => {
       nameForm[0].textContent = `Welcome, ${name.value}!`;
       nameForm[1].style.display = "none";
       nameForm[2].style.display = "none";
+      navigateForm("placer-form");
+      window.GAME.playerName = name.value;
     }
   });
+  // Animation
+  document.querySelector("#name-form").style.animation = "reveal 1s forwards";
+  // Show high scores or old game results
+  pastScoresContent();
 };
 
+// Loads the past scores table
+const pastScoresContent = () => {
+  const pastScores = document.querySelector(".past-games");
+  let pastScoresTable = pastScores.querySelector("table");
+  // Get past scores if they exist
+  const pastScoresData = getGameResults();
+  // pastScoresData = [gameResult {playerScore, computerScore, computerName, winner}]
+  if (pastScoresData !== null) {
+    // Make past scores table visible
+    pastScores.style.display = "flex";
+    // For every gameResult object, create a table row and append it to the table
+    pastScoresData.forEach((gameResult) => {
+      const row = document.createElement("tr");
+      const scores = document.createElement("td");
+      const winner = document.createElement("td");
+      scores.textContent = `Player(${gameResult.playerScore}) vs ${gameResult.computerName}(${gameResult.computerScore})`;
+      winner.textContent = gameResult.winner;
+      row.appendChild(scores);
+      row.appendChild(winner);
+      pastScoresTable.appendChild(row);
+    });
+    // Add event listener to the past scores button
+    const pastScoresBtn = document.querySelector("#past-hider");
+    pastScoresBtn.addEventListener("click", () => {
+      const table = pastScores.querySelector("table");
+      if (table.classList.contains("hidden")) {
+        table.style.animation = "reveal 0.5s forwards";
+        pastScoresBtn.textContent = "Hide";
+        table.classList.remove("hidden");
+      } else {
+        table.style.animation = "hide 0.25s forwards";
+        pastScoresBtn.textContent = "Show";
+        // Wait for animation to finish
+        setTimeout(() => {
+          table.classList.add("hidden");
+        }, 251);
+      }
+    });
+  }
+};
+
+// Creates the placement form (random or manual)
+const placerFormContent = () => {
+  const shipBtns = document.querySelector(".ship-placement-btns").children;
+  const randomBtn = shipBtns[0];
+  const manualBtn = shipBtns[1];
+  randomBtn.addEventListener("click", () => {
+    window.GAME.placement = "random";
+    navigateForm("difficulty");
+  });
+  manualBtn.addEventListener("click", () => {
+    navigateForm("placer");
+  });
+  // Minimize the scores table if it exists
+  let button = document.querySelector("#past-hider");
+  if (button.textContent === "Hide") {
+    button.click();
+  }
+};
+
+// Creates the manual ship placement form
 const shipPlacerContent = () => {
   // Left click image
   document.getElementById("left-click").src = LeftClick;
@@ -49,11 +165,13 @@ const shipPlacerContent = () => {
     }
     shipGrid.appendChild(row);
   }
-  const instructions = document.querySelector(".instructions");
-
+  // Add event listeners to ships
   shipEventListeners();
+  // Add event listeners to the buttons on the right
+  createButtons();
 };
 
+// Creates elements for the manual ship placement form
 const shipEventListeners = () => {
   const destroyer = document.getElementById("ship-destroyer");
   const submarine = document.getElementById("ship-submarine");
@@ -63,208 +181,175 @@ const shipEventListeners = () => {
   const ships = [destroyer, submarine, cruiser, battleship, carrier];
   ships.forEach((ship) => {
     ship.addEventListener("click", () => {
+      // Disable mode button
+      document.getElementById("mode-button").disabled = true;
+      clearAllListeners();
       shipPlacer(ship.id.split("-")[1]);
+      // now that the ship has been placed, remove the event listener
+      const clonedShip = ship.cloneNode(true);
+      ship.replaceWith(clonedShip);
+      clonedShip.removeEventListener("click", () => {});
+      // Add placed class to the ship
+      clonedShip.classList.add("placed");
     });
   });
 };
 
-const shipPlacer = (ship) => {
-  const shipSizes = {
-    destroyer: 2,
-    submarine: 3,
-    cruiser: 3,
-    battleship: 4,
-    carrier: 6,
-  };
-  const shipSize = parseInt(shipSizes[ship]);
+// Creates buttons in ship placer
+const createButtons = () => {
+  const modeButton = document.getElementById("mode-button");
+  const placeButton = document.getElementById("place-button");
+  const resetButton = document.getElementById("reset-button");
+  const ships = document.querySelector(".ships");
+  const shipNames = document.querySelectorAll(".name-fragment");
 
-  // Select all ship cells that are valid for the ship size
-  let currentMode = document.querySelector(".current-mode").textContent;
-  let validCells;
-  switch (currentMode) {
-    case "H":
-      validCells = validShipCells(shipSize).horizontalValid;
-      break;
-    case "V":
-      validCells = validShipCells(shipSize).verticalValid;
-      break;
-    default:
-      validCells = validShipCells(shipSize).horizontalValid;
-      break;
-  }
-  // Hover effect
-  validCells.forEach((cell) => {
-    cell.addEventListener("mouseover", () => {
-      // Colour cells upto ship size
-      let currentCell = cell;
-      for (let i = 0; i < shipSize; i++) {
-        currentCell.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-        currentCell = currentCell.nextElementSibling;
-      }
-    });
-    cell.addEventListener("mouseout", () => {
-      let currentCell = cell;
-      for (let i = 0; i < shipSize; i++) {
-        currentCell.style.backgroundColor = "transparent";
-        currentCell = currentCell.nextElementSibling;
-      }
-    });
-  });
-
-  // Add event listeners to valid cells
-  validCells.forEach((cell) => {
-    cell.addEventListener("click", () => {
-      // Place ship
-      // set color to red for now
-      cell.style.backgroundColor = "red";
-      // Remove event listeners from valid cells
-      validCells.forEach((cell) => {
-        cell.removeEventListener("click", () => {});
+  // Mode button: Horizontal or Vertical
+  modeButton.addEventListener("click", () => {
+    const currentMode = window.GAME.currentMode;
+    if (currentMode === "H") {
+      modeButton.textContent = "Vertical";
+      window.GAME.currentMode = "V";
+      // Rotate the ships element by 90 degrees to the left
+      ships.style.animation = "horizontalToVertical 0.5s forwards";
+      // Change the ship names to vertical
+      shipNames.forEach((name) => {
+        name.style.animation = "textHorizontalToVertical 0.5s forwards";
+        name.parentElement.style.gap = "5px";
       });
-    });
-  });
-};
-
-/**
- * The validShipCells function returns an object with two arrays, horizontalValid and verticalValid.
- * Each array contains the cells that are valid for the ship size placement.
- *
- * @param {Integer} shipSize The size of the ship
- * @returns {Object} {horizontalValid: [Array], verticalValid: [Array]
- */
-const validShipCells = (shipSize) => {
-  const shipGrid = document.querySelector(".ship-grid");
-  const shipCells = shipGrid.querySelectorAll(".col");
-  let horizontal = [];
-  let redCells = [];
-  const vertical = [];
-  shipCells.forEach((cell) => {
-    if (cell.id[2] <= 10 - shipSize && cell.style.backgroundColor !== "red") {
-      horizontal.push(cell);
-    }
-    if (cell.style.backgroundColor === "red") {
-      redCells.push(cell);
-    }
-    if (cell.id[1] <= 10 - shipSize && cell.style.backgroundColor !== "red") {
-      vertical.push(cell);
-    }
-  });
-
-  const horizontalValid = horizontalValidity(horizontal, shipSize, redCells);
-  const verticalValid = verticalValidity(vertical, shipSize, redCells);
-
-  return { horizontalValid, verticalValid };
-};
-
-const horizontalValidity = (horizontal, shipSize, redCells) => {
-  // horizontal validity
-  let horizontalValid = [];
-  let validShip = [horizontal[0]];
-  let currentRow = horizontal[0].id[1];
-  let currentCol = horizontal[0].id[2];
-  for (let i = 0; i < horizontal.length; i++) {
-    if (
-      horizontal[i].id[1] == currentRow &&
-      horizontal[i].id[2] == currentCol + 1
-    ) {
-      validShip.push(horizontal[i]);
-      currentRow = parseInt(horizontal[i].id[1]);
-      currentCol = parseInt(horizontal[i].id[2]);
     } else {
-      validShip.forEach((cell) => {
-        horizontalValid.push(cell);
+      modeButton.textContent = "Horizontal";
+      window.GAME.currentMode = "H";
+      // Set the ships element back to normal
+      ships.style.animation = "verticalToHorizontal 0.5s forwards";
+      // Change the ship names back to horizontal
+      shipNames.forEach((name) => {
+        name.style.animation = "textVerticalToHorizontal 0.5s forwards";
+        name.parentElement.style.gap = "";
       });
-      validShip = [horizontal[i]];
-      currentRow = horizontal[i].id[1];
-      currentCol = horizontal[i].id[2];
     }
-
-    if (validShip.length === shipSize) {
-      horizontalValid.push(validShip.shift());
-    }
-  }
-
-  // Add remaining valid ship cells to horizontalValid
-  if (validShip.length > 0) {
-    validShip.forEach((cell) => {
-      horizontalValid.push(cell);
-    });
-  }
-
-  let toRemove = [];
-  // Check if any of the cells lead to a red cell
-  horizontalValid.forEach((cell) => {
-    redCells.forEach((redCell) => {
-      if (
-        cell.id[1] === redCell.id[1] &&
-        parseInt(cell.id[2]) + shipSize > redCell.id[2]
-      ) {
-        toRemove.push(cell);
-      }
-    });
   });
 
-  // Remove cells that lead to a red cell
-  toRemove.forEach((cell) => {
-    horizontalValid.splice(horizontalValid.indexOf(cell), 1);
+  // Reset button: Reset the ship grid
+  resetButton.addEventListener("click", () => {
+    // Remove all ships
+    // Remove all placed classes (buttons on the left)
+    document.querySelectorAll(".placed").forEach((ship) => {
+      ship.classList.remove("placed");
+    });
+    // Remove all event listeners
+    clearAllListeners();
+    // Reset the ship grid
+    document.querySelectorAll(".occupied").forEach((cell) => {
+      cell.classList.remove("occupied");
+    });
+    // Reset ship buttons
+    shipEventListeners();
+    // Reset mode button
+    document.getElementById("mode-button").disabled = false;
+    // Make ships element horizontal if it is vertical
+    if (document.querySelector(".current-mode").textContent === "V") {
+      ships.style.animation = "verticalToHorizontal 0.5s forwards";
+      // Change the ship names back to horizontal
+      shipNames.forEach((name) => {
+        name.style.animation = "textVerticalToHorizontal 0.5s forwards";
+        name.parentElement.style.gap = "";
+      });
+      document.getElementById("mode-button").textContent = "Horizontal";
+      document.querySelector(".current-mode").textContent = "H";
+    }
+    // Disable place button
+    document.getElementById("place-button").disabled = true;
   });
 
-  return horizontalValid;
+  // Place button: Place the ships on the board
+  placeButton.addEventListener("click", () => {
+    // Hide ship placer
+    document.querySelector(".ship-placer").style.display = "none";
+    navigateForm("difficulty");
+  });
 };
 
-const verticalValidity = (vertical, shipSize, redCells) => {
-  // Vertical validity
-  let verticalValid = [];
-  let validShip = [vertical[0]];
-  let currentRow = vertical[0].id[1];
-  let currentCol = vertical[0].id[2];
-  for (let i = 0; i < vertical.length; i++) {
-    if (
-      vertical[i].id[1] == currentRow + 1 &&
-      vertical[i].id[2] == currentCol
-    ) {
-      validShip.push(vertical[i]);
-      currentRow = parseInt(vertical[i].id[1]);
-      currentCol = parseInt(vertical[i].id[2]);
-    } else {
-      validShip.forEach((cell) => {
-        verticalValid.push(cell);
-      });
-      validShip = [vertical[i]];
-      currentRow = vertical[i].id[1];
-      currentCol = vertical[i].id[2];
-    }
-
-    if (validShip.length === shipSize) {
-      verticalValid.push(validShip.shift());
-    }
-  }
-
-  // Add remaining valid ship cells to verticalValid
-  if (validShip.length > 0) {
-    validShip.forEach((cell) => {
-      verticalValid.push(cell);
-    });
-  }
-
-  let toRemove = [];
-
-  verticalValid.forEach((cell) => {
-    redCells.forEach((redCell) => {
-      if (
-        cell.id[2] === redCell.id[2] &&
-        parseInt(cell.id[1]) + shipSize > redCell.id[1]
-      ) {
-        toRemove.push(cell);
-      }
+// Creates the difficulty form
+const difficultyContent = () => {
+  const difficulties = ["easy", "medium", "hard"];
+  difficulties.forEach((difficulty) => {
+    const difficultyButton = document.getElementById(difficulty);
+    difficultyButton.addEventListener("click", () => {
+      window.GAME.difficulty = difficulty;
+      navigateForm("game");
     });
   });
+};
 
-  toRemove.forEach((cell) => {
-    verticalValid.splice(verticalValid.indexOf(cell), 1);
-  });
+// Converts the board to a gameboard
+const boardToGameboard = () => {
+  const locations = window.GAME.shipLocations;
+  const gameboard = new Gameboard();
+  gameboard.createBoard();
+  // Go over each key:value pair in locations
+  for (let [coords, ship] of Object.entries(locations)) {
+    let coordsArray = [];
+    // Coords 1,2,1,3
+    // Remove commas
+    coords = coords.replace(/,/g, "");
+    for (let i = 0; i < coords.length; i += 2) {
+      coordsArray.push([parseInt(coords[i]), parseInt(coords[i + 1])]);
+    }
+    gameboard.placeShip(ship, coordsArray);
+  }
+  return gameboard;
+};
 
-  return verticalValid;
+// Picks a random name for the computer
+const setComputerName = () => {
+  const easyNames = [
+    "Whimsy",
+    "Bumble",
+    "Zigzag",
+    "Giggles",
+    "Doodle",
+    "Sprinkle",
+    "Wobble",
+    "Noodle",
+    "Squiggle",
+    "Jingle",
+  ];
+  const mediumNames = [
+    "Fizzbuzz",
+    "Quirkster",
+    "Zany",
+    "Sillygoose",
+    "Jumble",
+    "Wacky",
+    "Jester",
+    "Peculiar",
+    "Curly",
+    "Chaos",
+  ];
+  const hardNames = [
+    "Riddlesnake",
+    "Mischiefmaker",
+    "Kookaburra",
+    "Whirlwind",
+    "Fandango",
+    "Pandemonium",
+    "Jabberwocky",
+    "Hullabaloo",
+    "Discombobulator",
+    "Kerfuffle",
+  ];
+  const name = document.querySelector(".computer-name");
+  switch (window.GAME.difficulty) {
+    case "easy":
+      name.textContent = easyNames[Math.floor(Math.random() * 10)];
+      break;
+    case "medium":
+      name.textContent = mediumNames[Math.floor(Math.random() * 10)];
+      break;
+    case "hard":
+      name.textContent = hardNames[Math.floor(Math.random() * 10)];
+      break;
+  }
 };
 
 export default createForm;

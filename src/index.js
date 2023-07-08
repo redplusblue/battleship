@@ -1,11 +1,10 @@
 import "./styles/game.css";
 import "./styles/animations.css";
 import "./styles/welcome-form.css";
-import { createLayout } from "./helpers/layout";
-import { gameloop } from "./helpers/gameloop";
+import init from "./helpers/nameSpace";
 import createForm from "./helpers/welcomeForm";
 
-document.querySelector(".game-board-container").style.display = "none";
+// Create the namespace
+init();
+// Create the welcome form
 createForm();
-// createLayout();
-// gameloop();

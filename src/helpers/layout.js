@@ -2,6 +2,7 @@ import AI from "../factories/AI";
 import Player from "../factories/Player";
 import { loop } from "./gameloop";
 
+// Creates the layout for the boards
 const createLayout = () => {
   // Player Side
   const playerGameBoard = document.querySelector(".player-side").children[0];
@@ -42,6 +43,8 @@ const createLayout = () => {
 
 // Function to place the ships from the gameboard into the board on the DOM
 const gameboardToBoard = (player) => {
+  // Show Player name
+  document.querySelector(".player-name").innerText = player.name;
   let playerBoard = player.gameboard.board;
 
   // Loop through the player's board and for non-empty cells, add a class of occupied
@@ -203,6 +206,12 @@ const setWinner = (winner) => {
     document.querySelector(".computer-name").style.animation =
       "textRainbow 3s ease-in-out infinite";
   }
+  // Enable reset button
+  const resetButton = document.querySelector("#game-reset-btn");
+  resetButton.style.display = "block";
+  resetButton.addEventListener("click", () => {
+    location.reload();
+  });
 };
 
 export {

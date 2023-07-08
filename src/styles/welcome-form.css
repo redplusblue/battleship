@@ -57,9 +57,105 @@
   color: black;
 }
 
+.past-games {
+  display: none;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: fit-content;
+  align-items: center;
+  justify-items: center;
+  gap: 1rem;
+  padding: 10px;
+}
+
+.past-games > h1 {
+  margin: 0;
+  padding: 0;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.past-games > table {
+  color: white;
+  font-size: 1rem;
+}
+
+th,
+td {
+  text-align: center;
+  border: 1px solid white;
+  padding: 0.5rem;
+}
+
+.hidden {
+  display: none;
+}
+
+.past-games > button {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 5px;
+  background-color: transparent;
+  opacity: 0.75;
+  color: white;
+  border: none;
+  outline: 2px solid white;
+  cursor: pointer;
+}
+
+.past-games > button:hover {
+  opacity: 1;
+  background-color: white;
+  color: #6600ff;
+}
+
+#ship-placer-form {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+#ship-placer-form > h1 {
+  margin: 0;
+  padding: 0;
+  font-size: 2rem;
+  text-align: center;
+}
+
+#ship-placer-form > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.ship-placement-btns > button,
+.difficulty-btn {
+  font-family: inherit;
+  font-size: 1.5rem;
+  padding: 10px;
+  background-color: transparent;
+  color: white;
+  border-radius: 1rem;
+  border: 1px solid white;
+  outline: none;
+  cursor: pointer;
+}
+
+.ship-placement-btns > button:hover {
+  background-color: white;
+  color: #6600ff;
+}
+
 .ship-placer {
-  display: grid;
-  grid-template-columns: 0.8fr 1fr 0.8fr;
+  display: none;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 1rem;
   justify-items: center;
 }
@@ -71,7 +167,7 @@
 }
 
 .ship-selection {
-  width: 300px;
+  width: 400px;
   height: 400px;
   display: grid;
   grid-template-rows: 1fr 10fr;
@@ -122,11 +218,29 @@
 .ship-name {
   text-align: center;
   user-select: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
 #left-click {
   width: 30px;
   height: 30px;
+}
+
+.placed {
+  opacity: 0.65;
+  outline: 2px solid white;
+  pointer-events: none;
+}
+
+.placed > div {
+  background-color: black;
+}
+
+.hovered {
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .ship-grid {
@@ -135,6 +249,156 @@
 }
 
 .instructions {
-  width: 300px;
+  width: 400px;
   height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.instructions-content > h1 {
+  margin: 0;
+  padding: 0;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.instructions-content > ul {
+  font-size: 1.1rem;
+  text-align: left;
+  margin: auto;
+  padding: auto;
+}
+
+.mode-button-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  justify-content: space-around;
+  width: 90%;
+  gap: 5%;
+}
+
+.mode-button-container > label {
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+#mode-button {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 10px;
+  border-radius: 1rem;
+  background-color: #6600ff;
+  opacity: 0.75;
+  color: white;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+#mode-button:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.instructions-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 90%;
+  gap: 5%;
+}
+
+#reset-button {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 10px;
+  border-radius: 1rem;
+  background-color: #ff0000;
+  opacity: 0.75;
+  color: white;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+#place-button {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 10px;
+  border-radius: 1rem;
+  background-color: #6600ff;
+  opacity: 0.75;
+  color: white;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+#mode-button:hover,
+#reset-button:hover,
+#place-button:hover {
+  opacity: 1;
+}
+
+#place-button:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.difficulty {
+  display: none;
+}
+
+.difficulty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.difficulty-btn {
+  width: 100%;
+}
+
+#easy:hover {
+  background-color: white;
+  color: #6600ff;
+}
+
+#medium:hover {
+  background-color: #6600ff;
+  color: white;
+  border: 1px solid #6600ff;
+}
+
+#hard:hover {
+  background-color: #ff0000;
+  color: white;
+  border: 1px solid #ff0000;
+}
+
+#game-reset-btn {
+  display: none;
+  /* Place it at bottom center */
+  position: absolute;
+  bottom: 5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: inherit;
+  font-size: 1.5rem;
+  padding: 10px;
+  background-color: transparent;
+  color: white;
+  border-radius: 1rem;
+  border: 1px solid white;
+  outline: none;
+  cursor: pointer;
+}
+
+#game-reset-btn:hover {
+  background-color: white;
+  color: #6600ff;
 }

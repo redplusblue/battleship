@@ -1,6 +1,5 @@
-import Gameboard from "../factories/Gameboard";
 import Ship from "../factories/Ship";
-
+// Creates ships for random placement
 export const shipCreator = () => {
   const playerCarrier = new Ship("Carrier", [0, 1, 2, 3, 4, 5]);
   const playerBattleship = new Ship("Battleship", [0, 1, 2, 3]);

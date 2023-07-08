@@ -4,22 +4,29 @@ import Game from "../factories/Game";
 import { addEventListeners, setTurn, updateBoard } from "./layout";
 import { shipCreator, randomShipPlacer } from "./shipWizard";
 import { setWinner, gameboardToBoard } from "./layout";
+import { onGameOver } from "./history";
 
 // Main loop for the game
-export const gameloop = () => {
+export const gameloop = (playerName, playerBoard, difficulty) => {
   // Create players
-  const player = new Player("Player");
-  const computer = new AI();
-  computer.opponent = player;
+  const player = new Player(playerName);
+  const computer = new AI(player, difficulty);
   // Create and initialize gameboards
-  const playerGameboard = player.gameboard;
+  let playerGameboard = player.gameboard;
   const computerGameboard = computer.gameboard;
-  playerGameboard.createBoard();
   computerGameboard.createBoard();
   // Create ships and randomly place them on the board
   const ships = shipCreator();
-  randomShipPlacer(playerGameboard, ships.playerShips);
+  if (playerBoard == "auto") {
+    playerGameboard.createBoard();
+    randomShipPlacer(playerGameboard, ships.playerShips);
+  } else {
+    playerGameboard.board = playerBoard.board;
+    playerGameboard.ships = playerBoard.ships;
+    playerGameboard.shipPositions = playerBoard.shipPositions;
+  }
   randomShipPlacer(computerGameboard, ships.computerShips);
+  // Convert gameboard to board on the DOM
   gameboardToBoard(player);
   // Create game object
   const game = new Game(player, computer);
@@ -39,5 +46,6 @@ export const loop = (player, computer, game) => {
     updateBoard(player, computer);
   } else {
     setWinner(game.checkWin());
+    onGameOver(game.playerScore, game.computerScore);
   }
 };
