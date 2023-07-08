@@ -10,7 +10,7 @@ class Game {
 
   checkWin() {
     if (this.playerScore === 18) {
-      return "Player";
+      return this.player.name;
     } else if (this.computerScore === 18) {
       return "Computer";
     }
