@@ -92,7 +92,7 @@ const pastScoresContent = () => {
   let pastScoresTable = pastScores.querySelector("table");
   // Get past scores if they exist
   const pastScoresData = getGameResults();
-  // pastScoresData = [gameResult {playerScore, computerScore, computerName, winner}]
+  // pastScoresData = [gameResult {playerScore, computerScore, playerName, computerName, winner}]
   if (pastScoresData !== null) {
     // Make past scores table visible
     pastScores.style.display = "flex";
@@ -101,7 +101,7 @@ const pastScoresContent = () => {
       const row = document.createElement("tr");
       const scores = document.createElement("td");
       const winner = document.createElement("td");
-      scores.textContent = `Player(${gameResult.playerScore}) vs ${gameResult.computerName}(${gameResult.computerScore})`;
+      scores.textContent = `${gameResult.playerName}(${gameResult.playerScore}) vs ${gameResult.computerName}(${gameResult.computerScore})`;
       winner.textContent = gameResult.winner;
       row.appendChild(scores);
       row.appendChild(winner);

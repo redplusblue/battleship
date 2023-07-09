@@ -42,15 +42,17 @@ const checkGameResult = () => {
 // Save the game result into localStorage for later use
 export const onGameOver = (playerScore, computerScore) => {
   const computerName = document.querySelector(".computer-name").textContent;
+  const playerName = document.querySelector(".player-name").textContent;
   let winner;
   if (playerScore > computerScore) {
-    winner = "Player";
+    winner = playerName;
   } else {
     winner = computerName;
   }
   const gameResult = {
     playerScore,
     computerScore,
+    playerName,
     computerName,
     winner,
   };
