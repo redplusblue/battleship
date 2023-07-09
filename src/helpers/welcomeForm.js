@@ -1,7 +1,7 @@
 import LeftClick from "../assets/click.png";
 import Gameboard from "../factories/Gameboard";
 import { createLayout } from "./layout";
-import { shipPlacer, clearAllListeners } from "./shipPlacer";
+import { shipPlacer, clearAllListeners, resetShipSizes } from "./shipPlacer";
 import { gameloop } from "./gameloop";
 import { getGameResults } from "./history";
 
@@ -185,12 +185,14 @@ const shipEventListeners = () => {
       document.getElementById("mode-button").disabled = true;
       clearAllListeners();
       shipPlacer(ship.id.split("-")[1]);
+      console.log(ship.id.split("-")[1]);
       // now that the ship has been placed, remove the event listener
-      const clonedShip = ship.cloneNode(true);
-      ship.replaceWith(clonedShip);
-      clonedShip.removeEventListener("click", () => {});
-      // Add placed class to the ship
-      clonedShip.classList.add("placed");
+      // const clonedShip = ship.cloneNode(true);
+      // ship.replaceWith(clonedShip);
+      // clonedShip.removeEventListener("click", () => {});
+      // // Add placed class to the ship
+      // clonedShip.classList.add("placed");
+      ship.classList.add("placed");
     });
   });
 };
@@ -236,18 +238,20 @@ const createButtons = () => {
     document.querySelectorAll(".placed").forEach((ship) => {
       ship.classList.remove("placed");
     });
-    // Remove all event listeners
+    // Remove all event listeners on the grid
     clearAllListeners();
     // Reset the ship grid
     document.querySelectorAll(".occupied").forEach((cell) => {
       cell.classList.remove("occupied");
     });
+    // Reset ship data structure within ship placer
+    resetShipSizes();
     // Reset ship buttons
     shipEventListeners();
     // Reset mode button
     document.getElementById("mode-button").disabled = false;
     // Make ships element horizontal if it is vertical
-    if (document.querySelector(".current-mode").textContent === "V") {
+    if (window.GAME.currentMode === "V") {
       ships.style.animation = "verticalToHorizontal 0.5s forwards";
       // Change the ship names back to horizontal
       shipNames.forEach((name) => {
@@ -255,7 +259,7 @@ const createButtons = () => {
         name.parentElement.style.gap = "";
       });
       document.getElementById("mode-button").textContent = "Horizontal";
-      document.querySelector(".current-mode").textContent = "H";
+      window.GAME.currentMode = "H";
     }
     // Disable place button
     document.getElementById("place-button").disabled = true;

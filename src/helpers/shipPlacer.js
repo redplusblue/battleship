@@ -12,9 +12,19 @@ const shipSizes = {
   carrier: 6,
 };
 
+export const resetShipSizes = () => {
+  shipSizes.destroyer = 2;
+  shipSizes.submarine = 3;
+  shipSizes.cruiser = 3;
+  shipSizes.battleship = 4;
+  shipSizes.carrier = 6;
+};
+
 export const shipPlacer = (ship) => {
   const shipSize = parseInt(shipSizes[ship]);
-
+  console.log(shipSize);
+  console.log(shipSizes);
+  console.log(ship);
   // Select all ship cells that are valid for the ship size
   let currentMode = window.GAME.currentMode;
   let validCells;
