@@ -148,6 +148,12 @@ td {
   cursor: pointer;
 }
 
+.not-allowed {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
 .ship-placement-btns > button:hover {
   background-color: white;
   color: #6600ff;
