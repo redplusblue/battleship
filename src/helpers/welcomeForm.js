@@ -185,14 +185,13 @@ const shipEventListeners = () => {
       document.getElementById("mode-button").disabled = true;
       clearAllListeners();
       shipPlacer(ship.id.split("-")[1]);
-      console.log(ship.id.split("-")[1]);
-      // now that the ship has been placed, remove the event listener
-      // const clonedShip = ship.cloneNode(true);
-      // ship.replaceWith(clonedShip);
-      // clonedShip.removeEventListener("click", () => {});
-      // // Add placed class to the ship
-      // clonedShip.classList.add("placed");
       ship.classList.add("placed");
+      // Add not allowed class to all other ships
+      ships.forEach((ship) => {
+        if (!ship.classList.contains("placed")) {
+          ship.classList.add("not-allowed");
+        }
+      });
     });
   });
 };

@@ -22,9 +22,6 @@ export const resetShipSizes = () => {
 
 export const shipPlacer = (ship) => {
   const shipSize = parseInt(shipSizes[ship]);
-  console.log(shipSize);
-  console.log(shipSizes);
-  console.log(ship);
   // Select all ship cells that are valid for the ship size
   let currentMode = window.GAME.currentMode;
   let validCells;
@@ -41,6 +38,21 @@ export const shipPlacer = (ship) => {
       validCells = validShipCells(shipSize).horizontalValid;
       break;
   }
+};
+
+const enableShipButtons = () => {
+  const destroyer = document.getElementById("ship-destroyer");
+  const submarine = document.getElementById("ship-submarine");
+  const cruiser = document.getElementById("ship-cruiser");
+  const battleship = document.getElementById("ship-battleship");
+  const carrier = document.getElementById("ship-carrier");
+  const ships = [destroyer, submarine, cruiser, battleship, carrier];
+  // Remove all the .not-allowed
+  ships.forEach((ship) => {
+    if (ship.classList.contains("not-allowed")) {
+      ship.classList.remove("not-allowed");
+    }
+  });
 };
 
 // Adds event listeners to the cells that are valid for the ship size and mode
@@ -109,6 +121,8 @@ const horizontalHover = (validCells, shipSize) => {
       // Delete the placed ship from shipSizes
       delete shipSizes[shipName];
       clearAllListeners();
+      // Re enable ship buttons
+      enableShipButtons();
       // Re enable mode button
       document.getElementById("mode-button").disabled = false;
       // Check if all ships have been placed
@@ -189,6 +203,8 @@ const verticalHover = (validCells, shipSize) => {
       // Delete the placed ship from shipSizes
       delete shipSizes[shipName];
       clearAllListeners();
+      // Re enable ship buttons
+      enableShipButtons();
       // Re enable mode button
       document.getElementById("mode-button").disabled = false;
       // Check if all ships have been placed
