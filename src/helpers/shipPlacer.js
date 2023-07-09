@@ -132,8 +132,12 @@ const horizontalHover = (validCells, shipSize) => {
         // Disable mode button
         document.getElementById("mode-button").disabled = true;
       }
+      // Make all other grid cells allowed since ship has been placed
+      enableInvalidCells();
     });
   });
+  // Make all other grid cells not allowed
+  disableInvalidCells(validCells);
 };
 
 // Adds event listeners to the cells that are valid for the ship size and mode
@@ -214,8 +218,12 @@ const verticalHover = (validCells, shipSize) => {
         // Disable mode button
         document.getElementById("mode-button").disabled = true;
       }
+      // Make the rest of the cells allowed since the ship has been placed
+      enableInvalidCells(validCells);
     });
   });
+  // Make all other grid cells not allowed
+  disableInvalidCells(validCells);
 };
 
 /**
@@ -409,4 +417,26 @@ export const clearAllListeners = () => {
 
 const checkIfAllShipsPlaced = () => {
   return document.querySelectorAll(".placed").length === 5;
+};
+
+const enableInvalidCells = () => {
+  const shipGrid = document.querySelector(".ship-grid");
+  const shipCells = shipGrid.querySelectorAll(".col");
+
+  shipCells.forEach((cell) => {
+    if (cell.classList.contains("invalid")) {
+      cell.classList.remove("invalid");
+    }
+  });
+};
+
+const disableInvalidCells = (validCells) => {
+  const shipGrid = document.querySelector(".ship-grid");
+  const shipCells = shipGrid.querySelectorAll(".col");
+
+  shipCells.forEach((cell) => {
+    if (validCells.indexOf(cell) === -1) {
+      cell.classList.add("invalid");
+    }
+  });
 };
